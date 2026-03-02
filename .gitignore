@@ -1,6 +1,7 @@
 .DS_Store
 Thumbs.db
 
+.aiassistant/
 .idea/
 .venv/
 build/
@@ -10,6 +11,7 @@ lib/*
 logs/
 models/*
 node_modules/
+tmp/
 
 __pycache__/
 *.py[cod]
