@@ -102,7 +102,6 @@ class TenhouElectronClient(BaseElectronClient):
             if not mjai_messages:
                 return
 
-            logger.debug(f"[Tenhou] Decoded {len(mjai_messages)} MJAI messages")
             for msg in mjai_messages:
                 self._enqueue_event(msg)
 

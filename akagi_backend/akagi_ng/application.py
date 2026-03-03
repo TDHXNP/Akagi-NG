@@ -65,9 +65,9 @@ class AkagiApp:
             self.status = status
             controller = Controller(status=status)
             tracker = StateTracker(status=status)
-            logger.info("Bot components loaded successfully.")
+            logger.info("Components loaded successfully.")
         except ImportError:
-            logger.exception("Failed to load bot components or native library")
+            logger.exception("Failed to load components")
 
         app_context = AppContext(
             settings=settings,
@@ -96,7 +96,6 @@ class AkagiApp:
             source.start()
 
         self._setup_signals()
-        logger.info("Akagi backend loop started.")
 
     def _setup_signals(self):
         """设置信号处理器以关闭程序"""
