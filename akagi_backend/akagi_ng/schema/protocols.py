@@ -9,7 +9,9 @@ from akagi_ng.schema.types import (
     EngineAdditionalMeta,
     EngineAdditionalMetaKey,
     EngineType,
+    FullRecommendationData,
     MJAIEvent,
+    MJAIMetadata,
     MJAIResponse,
     NotificationFlagKey,
     NotificationFlags,
@@ -85,6 +87,7 @@ class PlayerStateProtocol(Protocol):
     def brief_info(self) -> str: ...
     def ankan_candidates(self) -> Sequence[str]: ...
     def kakan_candidates(self) -> Sequence[str]: ...
+    def discardable_tiles_riichi_declaration(self) -> Sequence[str]: ...
 
 
 class EngineProtocol(Protocol):
@@ -141,11 +144,11 @@ class BotProtocol(Protocol):
         ...
 
 
-class StateTrackerProtocol(BotProtocol):
+class StateTrackerProtocol(BotProtocol, Protocol):
     """状态追踪器协议接口。"""
 
+    meta: MJAIMetadata
     player_state: PlayerStateProtocol | None
-    discardable_tiles_riichi_declaration: list[str]
 
     @property
     def last_self_tsumo(self) -> str | None: ...
@@ -161,6 +164,11 @@ class StateTrackerProtocol(BotProtocol):
 
     @property
     def tehai_mjai_with_aka(self) -> list[str]: ...
+
+    @property
+    def discardable_tiles_riichi_declaration(self) -> list[str]: ...
+
+    def build_recommendations(self, response: MJAIResponse) -> FullRecommendationData | None: ...
 
 
 class GameBridge(Protocol):

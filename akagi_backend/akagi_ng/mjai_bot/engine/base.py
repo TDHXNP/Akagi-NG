@@ -31,14 +31,6 @@ class BaseEngine:
         # torch.autocast 参数，CPU 推理无需 AMP
         self.enable_amp = False
 
-    def fork(self, status: BotStatusContext | None = None) -> Self:
-        """
-        创建当前引擎的副本（Fork）。
-        共享底层的重资源（如模型、网络连接），但拥有独立的状态。
-        用于确保 Lookahead 等子任务不会污染主任务的状态。
-        """
-        raise NotImplementedError("Subclasses must implement fork()")
-
     @property
     def enable_rule_based_agari_guard(self) -> bool:
         """
@@ -47,9 +39,13 @@ class BaseEngine:
         """
         return True
 
-    def reset_status(self):
-        """重置引擎内部状态（如回退标志）。默认不执行任何操作。"""
-        pass
+    def fork(self, status: BotStatusContext | None = None) -> Self:
+        """
+        创建当前引擎的副本（Fork）。
+        共享底层的重资源（如模型、网络连接），但拥有独立的状态。
+        用于确保 Lookahead 等子任务不会污染主任务的状态。
+        """
+        raise NotImplementedError("Subclasses must implement fork()")
 
     def react_batch(
         self,

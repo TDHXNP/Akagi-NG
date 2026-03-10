@@ -15,7 +15,6 @@ from akagi_ng.core.logging import (
     logger,
 )
 from akagi_ng.dataserver import DataServer
-from akagi_ng.dataserver.adapter import build_dataserver_payload
 from akagi_ng.electron_client import create_electron_client
 from akagi_ng.mitm_client import MitmClient
 from akagi_ng.mjai_bot import Controller, StateTracker
@@ -190,7 +189,7 @@ class AkagiApp:
             return
 
         response = result.response or MJAIResponse(type="none")
-        payload = build_dataserver_payload(response, tracker)
+        payload = tracker.build_recommendations(response)
 
         if payload:
             self.ds.send_recommendations(payload)

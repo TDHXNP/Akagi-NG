@@ -1,19 +1,29 @@
 from dataclasses import dataclass, field
+from typing import Literal
 
+from akagi_ng.core.lib_loader import libriichi
 from akagi_ng.mjai_bot.logger import logger
 from akagi_ng.mjai_bot.status import BotStatusContext
-from akagi_ng.mjai_bot.utils import serialize_mjai_event
+from akagi_ng.mjai_bot.utils import meta_to_recommend, serialize_mjai_event
 from akagi_ng.schema.constants import MahjongConstants
 from akagi_ng.schema.notifications import NotificationCode
 from akagi_ng.schema.protocols import PlayerStateProtocol, StateTrackerProtocol
 from akagi_ng.schema.types import (
     DahaiEvent,
+    FullRecommendationData,
+    FuuroDetail,
     MJAIEvent,
     MJAIMetadata,
     MJAIResponse,
     NukidoraEvent,
+    Recommendation,
+    SimCandidate,
     StartGameEvent,
 )
+from akagi_ng.settings import local_settings
+
+type ChiType = Literal["chi_low", "chi_mid", "chi_high"]
+type FuuroAction = Literal["chi_low", "chi_mid", "chi_high", "pon", "kan_select"]
 
 
 @dataclass
@@ -28,7 +38,6 @@ class StateTracker(StateTrackerProtocol):
     meta: MJAIMetadata = field(default_factory=dict)
     player_id: int = 0
     player_state: PlayerStateProtocol | None = None
-    discardable_tiles_riichi_declaration: list[str] = field(default_factory=list)
 
     def react(self, event: MJAIEvent) -> MJAIResponse | None:
         try:
@@ -37,10 +46,7 @@ class StateTracker(StateTrackerProtocol):
                 case StartGameEvent(id=player_id, is_3p=is_3p):
                     self.player_id = player_id
                     self.is_3p = is_3p
-
-                    from akagi_ng.core.lib_loader import libriichi as libs
-
-                    self.player_state = libs.state.PlayerState(self.player_id)
+                    self.player_state = libriichi.state.PlayerState(self.player_id)
                 # 三麻兼容：libriichi.PlayerState 状态追踪库不支持 nukidora 事件，需要转换为 dahai 事件
                 case NukidoraEvent(actor=actor):
                     processed_event = DahaiEvent(
@@ -116,3 +122,188 @@ class StateTracker(StateTrackerProtocol):
                 result.append(base_str)
 
         return result
+
+    @property
+    def discardable_tiles_riichi_declaration(self) -> list[str]:
+        return self.player_state.discardable_tiles_riichi_declaration() if self.player_state else []
+
+    def build_recommendations(self, response: MJAIResponse) -> FullRecommendationData | None:
+        """构建发送到 DataServer 的 Payload"""
+        try:
+            # 更新内部元数据，以便后续方法使用
+            meta: MJAIMetadata = response.get("meta")
+            if not meta:
+                return None
+            self.meta = meta
+
+            # 1. 生成标准推荐
+            recommendations = self._process_standard_recommendations()
+
+            # 2. 如果适用，附加立直前瞻信息
+            self._attach_riichi_lookahead(recommendations)
+
+            # 3. 如果已立直，过滤掉无需显示的推荐
+            if self.self_riichi_accepted:
+                allow_actions = {"kan", "tsumo", "ron", "nukidora"}
+                recommendations = [rec for rec in recommendations if rec["action"] in allow_actions]
+
+            return FullRecommendationData(
+                recommendations=recommendations,
+                engine_type=meta.get(NotificationCode.ENGINE_TYPE, "unknown"),
+                fallback_used=meta.get(NotificationCode.FALLBACK_USED, False),
+                circuit_open=meta.get(NotificationCode.RECONNECTING, False),
+            )
+
+        except Exception:
+            logger.exception("Failed to build recommendations")
+            return None
+
+    def _extract_consumed(self, target_bases: list[str]) -> list[str]:
+        """提取消耗牌，优先消耗赤宝牌"""
+        consumed = []
+        hand = self.tehai_mjai_with_aka
+
+        for base in target_bases:
+            pure_base = base.replace("r", "")
+            aka_version = f"{pure_base}r" if "5" in pure_base else None
+
+            if aka_version and aka_version in hand:
+                consumed.append(aka_version)
+                hand.remove(aka_version)
+            elif pure_base in hand:
+                consumed.append(pure_base)
+                hand.remove(pure_base)
+            else:
+                consumed.append(pure_base)
+        return consumed
+
+    def _handle_chi_fuuro(self, last_kawa: str, chi_type: ChiType) -> list[FuuroDetail]:
+        if not getattr(self.player_state.last_cans, f"can_{chi_type}", False):
+            return [{"tile": last_kawa, "consumed": []}]
+
+        base = last_kawa.replace("r", "")
+        try:
+            num = int(base[0])
+            suit = base[1]
+        except (ValueError, IndexError):
+            return [{"tile": last_kawa, "consumed": []}]
+
+        targets = []
+        match chi_type:
+            case "chi_low":
+                targets = [f"{num + 1}{suit}", f"{num + 2}{suit}"]
+            case "chi_mid":
+                targets = [f"{num - 1}{suit}", f"{num + 1}{suit}"]
+            case "chi_high":
+                targets = [f"{num - 2}{suit}", f"{num - 1}{suit}"]
+
+        consumed = self._extract_consumed(targets)
+        return [{"tile": last_kawa, "consumed": consumed}]
+
+    def _handle_pon_fuuro(self, last_kawa: str) -> list[FuuroDetail]:
+        if not self.player_state.last_cans.can_pon:
+            return [{"tile": last_kawa, "consumed": []}]
+
+        base = last_kawa.replace("r", "")
+        consumed = self._extract_consumed([base, base])
+        return [{"tile": last_kawa, "consumed": consumed}]
+
+    def _handle_kan_fuuro(self, last_kawa: str | None) -> list[FuuroDetail]:
+        results: list[FuuroDetail] = []
+        if last_kawa and self.player_state.last_cans.can_daiminkan:
+            base = last_kawa.replace("r", "")
+            consumed = self._extract_consumed([base, base, base])
+            results.append({"tile": last_kawa, "consumed": consumed})
+            return results
+
+        for cand in self.player_state.ankan_candidates():
+            base = cand.replace("r", "")
+            consumed = self._extract_consumed([base, base, base, base])
+            results.append({"tile": consumed[0] if consumed else "?", "consumed": consumed})
+
+        for cand in self.player_state.kakan_candidates():
+            base = cand.replace("r", "")
+            consumed = self._extract_consumed([base])
+            results.append({"tile": consumed[0] if consumed else "?", "consumed": consumed})
+        return results
+
+    def _get_fuuro_details(self, action: FuuroAction) -> list[FuuroDetail]:
+        last_kawa = self.last_kawa_tile
+        if not self.player_state or (action != "kan_select" and not last_kawa):
+            return []
+
+        match action:
+            case "chi_low" | "chi_mid" | "chi_high":
+                return self._handle_chi_fuuro(last_kawa, chi_type=action)
+            case "pon":
+                return self._handle_pon_fuuro(last_kawa)
+            case "kan_select":
+                return self._handle_kan_fuuro(last_kawa)
+            case _:
+                return []
+
+    def _handle_hora_action(self, base_item: Recommendation):
+        if self.can_tsumo_agari:
+            base_item["action"] = "tsumo"
+            if tsumo_tile := self.last_self_tsumo:
+                base_item["tile"] = tsumo_tile
+        else:
+            base_item["action"] = "ron"
+            if last_kawa := self.last_kawa_tile:
+                base_item["tile"] = last_kawa
+
+    def _process_standard_recommendations(self) -> list[Recommendation]:
+        recommendations: list[Recommendation] = []
+        if "q_values" not in self.meta or "mask_bits" not in self.meta:
+            return recommendations
+
+        top3 = meta_to_recommend(self.meta, self.is_3p, temperature=local_settings.model_config.temperature)[:3]
+
+        for action, confidence in top3:
+            original_action = action
+            if action == "kan_select":
+                action = "kan"
+            elif action.startswith("chi_"):
+                action = "chi"
+
+            base_item: Recommendation = {"action": action, "confidence": confidence}
+            fuuro_details = self._get_fuuro_details(original_action)
+
+            if fuuro_details:
+                recommendations.extend(base_item | detail for detail in fuuro_details)
+            else:
+                # 如果有具体详情(如多个杠),展开
+                if action == "hora":
+                    self._handle_hora_action(base_item)
+                # 无副露详情,只添加基本项
+                elif action == "nukidora":
+                    base_item["tile"] = "N"
+                recommendations.append(base_item)
+        return recommendations
+
+    def _attach_riichi_lookahead(self, recommendations: list[Recommendation]):
+        lookahead_meta = self.meta.get("riichi_lookahead")
+        if not lookahead_meta:
+            return
+
+        try:
+            lookahead_recs = meta_to_recommend(
+                lookahead_meta, self.is_3p, temperature=local_settings.model_config.temperature
+            )
+            if not lookahead_recs:
+                return
+
+            valid_discards = self.discardable_tiles_riichi_declaration
+            sim_candidates: list[SimCandidate] = [
+                SimCandidate(tile=act, confidence=float(conf))
+                for act, conf in lookahead_recs
+                if not valid_discards or act in valid_discards
+            ][: MahjongConstants.MIN_RIICHI_CANDIDATES]
+
+            for item in recommendations:
+                if item["action"] == "reach":
+                    item["sim_candidates"] = sim_candidates
+                    break
+
+        except Exception as e:
+            logger.warning(f"Error attaching riichi lookahead: {e}")
