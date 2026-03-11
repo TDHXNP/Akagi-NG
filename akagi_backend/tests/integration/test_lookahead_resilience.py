@@ -15,13 +15,13 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
-from tests.conftest import HAS_LIBRIICHI
 
 from akagi_ng.bridge.majsoul.bridge import MajsoulBridge
 from akagi_ng.mjai_bot.bot import MortalBot
 from akagi_ng.mjai_bot.engine.provider import EngineProvider
 from akagi_ng.mjai_bot.status import BotStatusContext
 from akagi_ng.schema.types import StartGameEvent, StartKyokuEvent, TsumoEvent
+from tests.conftest import HAS_LIBRIICHI
 
 # ==========================================
 # Real Liqi Payloads (Shared Resource)

@@ -14,7 +14,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from akagi_ng.application import AkagiApp
-from akagi_ng.core import AppContext
+from akagi_ng.core.context import AppContext
 from akagi_ng.schema.types import MJAIResponse, ProcessResult
 
 
@@ -135,7 +135,7 @@ def test_emit_outputs_standard(app) -> None:
     )
     mock_state_tracker = MagicMock()
 
-    with patch("akagi_ng.application.build_dataserver_payload", return_value={"rec": True}):
+    with patch.object(mock_state_tracker, "build_recommendations", return_value={"rec": True}):
         app._emit_outputs(result, mock_state_tracker)
 
         # 应该发送通知和推荐
@@ -153,7 +153,7 @@ def test_emit_outputs_sync_masking(app) -> None:
     )
     mock_state_tracker = MagicMock()
 
-    with patch("akagi_ng.application.build_dataserver_payload", return_value={"rec": True}):
+    with patch.object(mock_state_tracker, "build_recommendations", return_value={"rec": True}):
         app._emit_outputs(result, mock_state_tracker)
 
         # 应该发送通知，但不发送推荐

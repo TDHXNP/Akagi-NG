@@ -56,7 +56,6 @@ class TestSettingsDataclasses(unittest.TestCase):
     def test_model_config_creation(self):
         config = ModelConfig(
             temperature=0.7,
-            rule_based_agari_guard=True,
         )
         self.assertEqual(config.temperature, 0.7)
 
@@ -75,7 +74,6 @@ class TestSettingsClass(unittest.TestCase):
             ot=OTConfig(online=False),
             model_config=ModelConfig(
                 temperature=1.0,
-                rule_based_agari_guard=True,
             ),
         )
 
@@ -100,7 +98,6 @@ class TestSettingsClass(unittest.TestCase):
             "ot": {"online": True, "server": "https://api.test.com", "api_key": "abc123"},
             "model_config": {
                 "temperature": 0.5,
-                "rule_based_agari_guard": False,
                 "model_4p": "mortal.pth",
                 "model_3p": "mortal3p.pth",
             },
@@ -165,10 +162,10 @@ class TestSettingsLifecycle(unittest.TestCase):
         with (
             patch("akagi_ng.settings.settings._get_schema", return_value={}),
             patch("akagi_ng.settings.settings.SETTINGS_JSON_PATH") as mock_path,
-            patch("builtins.open", mock_open(read_data="invalid json")),
             patch("akagi_ng.settings.settings._backup_and_reset_settings") as mock_backup,
         ):
             mock_path.exists.return_value = True
+            mock_path.read_text.return_value = "invalid json"
             mock_backup.return_value = get_default_settings_dict()
             _load_settings()
             mock_backup.assert_called()

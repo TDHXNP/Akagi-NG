@@ -111,9 +111,32 @@ addopts = [
 ]
 markers = [
     "slow: marks tests as slow",
+    "unit: marks tests as unit tests",
     "integration: marks tests as integration tests",
     "e2e: marks tests as end-to-end tests",
     "performance: marks tests as performance tests",
+    "bridge: marks tests related to game bridges",
+    "majsoul: marks tests related to Majsoul",
+    "tenhou: marks tests related to Tenhou",
+    "riichi_city: marks tests related to Riichi City",
+    "amatsuki: marks tests related to Amatsuki",
+    "liqi: marks tests related to Liqi protocol",
+    "nukidora: marks tests related to Nukidora logic",
+    "engine: marks tests related to engines",
+    "akagi_ot: marks tests related to Akagi-OT",
+    "bot: marks tests related to AI bots",
+    "lookahead: marks tests related to reach lookahead",
+    "state_tracker: marks tests related to state tracking",
+    "application: marks tests related to core application logic",
+    "controller: marks tests related to game controller",
+    "settings: marks tests related to settings",
+    "utils: marks tests related to utilities",
+    "dataserver: marks tests related to data server",
+    "sse: marks tests related to SSE",
+    "client: marks tests related to clients (Electron/MITM)",
+    "electron: marks tests related to Electron client",
+    "mitm_client: marks tests related to MITM client",
+    "mitm_bridge: marks tests related to MITM bridge",
 ]
 
 [tool.coverage.run]
