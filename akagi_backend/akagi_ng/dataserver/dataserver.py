@@ -7,6 +7,7 @@ from aiohttp import web
 from akagi_ng.dataserver.api import cors_middleware, setup_routes
 from akagi_ng.dataserver.logger import logger
 from akagi_ng.dataserver.sse import SSEManager
+from akagi_ng.dataserver.webhook import WebhookManager
 from akagi_ng.schema.types import FullRecommendationData, Notification
 from akagi_ng.settings import local_settings
 
@@ -18,13 +19,15 @@ class DataServer(threading.Thread):
         self.daemon = True
         self.external_port = external_port if external_port is not None else local_settings.server.port
         self.sse_manager = SSEManager()
+        self.webhook_manager = WebhookManager()
         self.loop = None
         self.runner = None
         self.running = False
 
     def broadcast_event(self, event: str, data: dict):
-        """代理到 SSEManager"""
+        """代理到 SSEManager 和 WebhookManager"""
         self.sse_manager.broadcast_event(event, data)
+        self.webhook_manager.send_webhook(event, data)
 
     def send_recommendations(self, recommendations_data: FullRecommendationData):
         """广播推荐数据"""
@@ -51,6 +54,8 @@ class DataServer(threading.Thread):
         self.running = False
         if self.sse_manager:
             self.sse_manager.stop()
+        if self.webhook_manager and self.loop:
+            asyncio.run_coroutine_threadsafe(self.webhook_manager.stop(), self.loop)
         if self.is_alive():
             self.join(timeout=2.0)
 
@@ -58,9 +63,12 @@ class DataServer(threading.Thread):
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
 
-        # 初始化 SSE 循环
+        # 初始化 SSE 和 Webhook 循环
         self.sse_manager.set_loop(self.loop)
         self.sse_manager.start()
+
+        self.webhook_manager.set_loop(self.loop)
+        self.loop.run_until_complete(self.webhook_manager.start())
 
         try:
             app = web.Application(middlewares=[cors_middleware])

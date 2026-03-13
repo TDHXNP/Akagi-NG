@@ -21,6 +21,7 @@ import { ConnectionSection } from './settings/ConnectionSection';
 import { GeneralSection } from './settings/GeneralSection';
 import { ModelConfigSection } from './settings/ModelConfigSection';
 import { ServiceSection } from './settings/ServiceSection';
+import { WebhookSection } from './settings/WebhookSection';
 
 interface SettingsPanelProps {
   open: boolean;
@@ -91,6 +92,8 @@ const SettingsPanel: FC<SettingsPanelProps> = memo(({ open, onClose }) => {
             </div>
 
             <ServiceSection settings={settings} updateSetting={updateSetting} />
+
+            <WebhookSection settings={settings} updateSetting={updateSetting} />
 
             <ModelConfigSection settings={settings} updateSetting={updateSetting} />
 

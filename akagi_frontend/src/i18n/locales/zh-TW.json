@@ -42,6 +42,11 @@
       "host": "服務位址",
       "port": "連接埠"
     },
+    "webhook": {
+      "title": "Webhook 遠端推送",
+      "enabled": "啟用 Webhook",
+      "url": "Webhook 位址"
+    },
     "model_config": {
       "title": "AI 模型",
       "mode_selection": "模型選擇",
@@ -67,6 +72,8 @@
   "common": {
     "enabled": "已啟用",
     "disabled": "已停用",
+    "on": "開啟",
+    "off": "關閉",
     "confirm": "確認",
     "cancel": "取消",
     "error": "發生錯誤",

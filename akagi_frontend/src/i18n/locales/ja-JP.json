@@ -42,6 +42,11 @@
       "host": "サービスアドレス",
       "port": "ポート"
     },
+    "webhook": {
+      "title": "Webhook リモートプッシュ",
+      "enabled": "Webhook を有効化",
+      "url": "Webhook URL"
+    },
     "model_config": {
       "title": "AI モデル設定",
       "mode_selection": "モデル選択",
@@ -67,6 +72,8 @@
   "common": {
     "enabled": "有効",
     "disabled": "無効",
+    "on": "オン",
+    "off": "オフ",
     "confirm": "OK",
     "cancel": "キャンセル",
     "error": "エラー",
