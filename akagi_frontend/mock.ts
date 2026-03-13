@@ -32,6 +32,10 @@ const defaultSettings: Settings = {
     host: '127.0.0.1',
     port: 8765,
   },
+  webhook: {
+    enabled: false,
+    url: '',
+  },
   ot: {
     online: true,
     server: 'http://127.0.0.1:8765',

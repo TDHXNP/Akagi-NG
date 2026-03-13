@@ -47,6 +47,10 @@ export interface Settings {
     host: string;
     port: number;
   };
+  webhook: {
+    enabled: boolean;
+    url: string;
+  };
   ot: {
     online: boolean;
     server: string;

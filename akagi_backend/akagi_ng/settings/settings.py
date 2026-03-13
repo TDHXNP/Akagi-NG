@@ -48,6 +48,12 @@ class ServerConfig:
 
 
 @dataclass(slots=True)
+class WebhookConfig:
+    enabled: bool
+    url: str = ""
+
+
+@dataclass(slots=True)
 class ModelConfig:
     temperature: float
     model_4p: str = "mortal.pth"
@@ -62,6 +68,7 @@ class Settings:
     platform: Platform
     mitm: MITMConfig
     server: ServerConfig
+    webhook: WebhookConfig
     ot: OTConfig
     model_config: ModelConfig
 
@@ -92,6 +99,7 @@ class Settings:
         """从字典创建 Settings 对象"""
         mitm_data = data.get("mitm", {})
         server_data = data.get("server", {})
+        webhook_data = data.get("webhook", {})
         model_config_data = data.get("model_config", {})
         ot_data = data.get("ot", {})
         game_url = data.get("game_url", "")
@@ -113,6 +121,10 @@ class Settings:
             server=ServerConfig(
                 host=server_data.get("host", "127.0.0.1"),
                 port=server_data.get("port", 8765),
+            ),
+            webhook=WebhookConfig(
+                enabled=webhook_data.get("enabled", False),
+                url=webhook_data.get("url", ""),
             ),
             ot=OTConfig(
                 online=ot_data.get("online", False),
@@ -193,6 +205,10 @@ def get_default_settings_dict() -> dict:
             "upstream": "",
         },
         "server": {"host": "127.0.0.1", "port": 8765},
+        "webhook": {
+            "enabled": False,
+            "url": "",
+        },
         "ot": {"online": False, "server": "http://127.0.0.1:5000", "api_key": "<YOUR_API_KEY>"},
         "model_config": {
             "model_4p": "mortal.pth",
@@ -270,6 +286,10 @@ def _update_settings(settings: Settings, data: dict):
     server_data = data.get("server", {})
     settings.server.host = server_data.get("host", "127.0.0.1")
     settings.server.port = server_data.get("port", 8765)
+
+    webhook_data = data.get("webhook", {})
+    settings.webhook.enabled = webhook_data.get("enabled", False)
+    settings.webhook.url = webhook_data.get("url", "")
 
     model_config_data = data.get("model_config", {})
     settings.model_config.model_4p = model_config_data.get("model_4p", "mortal.pth")

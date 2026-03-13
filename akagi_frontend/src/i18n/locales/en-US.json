@@ -42,6 +42,11 @@
       "host": "Service Address",
       "port": "Port"
     },
+    "webhook": {
+      "title": "Webhook Remote Push",
+      "enabled": "Enable Webhook",
+      "url": "Webhook URL"
+    },
     "model_config": {
       "title": "AI Model",
       "mode_selection": "Model Select",
@@ -67,6 +72,8 @@
   "common": {
     "enabled": "Enabled",
     "disabled": "Disabled",
+    "on": "On",
+    "off": "Off",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "error": "Error",

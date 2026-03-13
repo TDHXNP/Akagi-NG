@@ -8,6 +8,7 @@
     "platform",
     "mitm",
     "server",
+    "webhook",
     "ot",
     "model_config"
   ],
@@ -81,6 +82,24 @@
       "required": ["host", "port"],
       "additionalProperties": false
     },
+    "webhook": {
+      "type": "object",
+      "description": "Webhook remote push configuration.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable webhook push."
+        },
+        "url": {
+          "type": "string",
+          "default": "",
+          "description": "Webhook URL endpoint."
+        }
+      },
+      "required": ["enabled", "url"],
+      "additionalProperties": false
+    },
     "ot": {
       "description": "Online service configuration.",
       "type": "object",
@@ -133,11 +152,7 @@
           "description": "Softmax temperature for model confidence normalization."
         }
       },
-      "required": [
-        "model_4p",
-        "model_3p",
-        "temperature"
-      ],
+      "required": ["model_4p", "model_3p", "temperature"],
       "additionalProperties": false
     }
   },

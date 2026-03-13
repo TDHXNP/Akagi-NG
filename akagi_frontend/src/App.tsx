@@ -66,6 +66,10 @@ function AppInner() {
             host: apiBase.split('://')[1]?.split(':')[0] || '127.0.0.1',
             port: parseInt(apiBase.split(':')[2]) || 8765,
           },
+          webhook: {
+            enabled: false,
+            url: '',
+          },
           ot: { online: false, server: '', api_key: '' },
           model_config: {
             model_4p: '',
