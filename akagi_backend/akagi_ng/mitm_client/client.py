@@ -44,7 +44,7 @@ class MitmClient:
         except Exception:
             logger.exception("MITM proxy error")
         finally:
-            logger.info("MITM proxy server stopped")
+            logger.info("MITM proxy server stopped.")
 
     def _run_in_thread(self, host: str, port: int, upstream: str = ""):
         """线程入口：运行独立 asyncio 事件循环。"""
