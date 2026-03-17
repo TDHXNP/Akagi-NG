@@ -17,6 +17,14 @@ updates:
       prefix: "ci"
       include: "scope"
     open-pull-requests-limit: 5
+    # 分组合并次要和补丁版本更新
+    groups:
+      actions-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   # Python 后端依赖更新
   - package-ecosystem: "pip"
@@ -33,9 +41,14 @@ updates:
       prefix: "deps"
       include: "scope"
     open-pull-requests-limit: 10
-    # 仅更新 pyproject.toml 中的依赖
-    allow:
-      - dependency-type: "direct"
+    # 分组合并次要和补丁版本更新
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   # Node.js 前端依赖更新
   - package-ecosystem: "npm"

@@ -3,7 +3,15 @@ import tomllib
 from pathlib import Path
 from PyInstaller.utils.hooks import collect_submodules
 
+import sys
+
 version_str = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+
+app_icon = "../assets/torii.ico"
+if sys.platform == "darwin":
+    app_icon = "../assets/torii.icns"
+elif sys.platform.startswith("linux"):
+    app_icon = "../assets/torii.png"
 
 version_tuple = tuple(map(int, version_str.split("."))) + (0,) * (4 - len(version_str.split(".")))
 
@@ -53,9 +61,11 @@ VSVersionInfo(
 """
 
 
-version_file = Path(tempfile.gettempdir()) / "akagi_ng_version_info.txt"
-version_file.write_text(version_info_content, encoding="utf-8")
-version_file = str(version_file)
+version_file = None
+if sys.platform == "win32":
+    version_file_path = Path(tempfile.gettempdir()) / "akagi_ng_version_info.txt"
+    version_file_path.write_text(version_info_content, encoding="utf-8")
+    version_file = str(version_file_path)
 
 
 block_cipher = None
@@ -103,7 +113,7 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     version=version_file,
-    icon='../assets/torii.ico',
+    icon=app_icon,
 )
 coll = COLLECT(
     exe,
