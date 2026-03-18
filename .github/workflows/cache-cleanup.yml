@@ -6,7 +6,6 @@ on:
     - cron: "0 0 * * 0"
   workflow_dispatch:
 
-# 并发控制：同时只运行一个清理任务
 concurrency:
   group: cache-cleanup
   cancel-in-progress: false
@@ -42,7 +41,7 @@ jobs:
             // 删除超过 7 天的缓存
             for (const cache of caches.data.actions_caches) {
               const cacheAge = now - new Date(cache.created_at).getTime();
-              
+
               if (cacheAge > weekInMs) {
                 try {
                   await github.rest.actions.deleteActionsCacheById({

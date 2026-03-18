@@ -1,4 +1,7 @@
 {
+  "options": {
+    "syntax": "proto3"
+  },
   "nested": {
     "lq": {
       "options": {
@@ -9573,6 +9576,10 @@
               "requestType": "ReqCreateYostarOrder",
               "responseType": "ResCreateYostarOrder"
             },
+            "createYostarV4SDKOrder": {
+              "requestType": "ReqCreateYostarV4SDKOrder",
+              "responseType": "ResCreateYostarV4SDKOrder"
+            },
             "createBillingOrder": {
               "requestType": "ReqCreateBillingOrder",
               "responseType": "ResCreateBillingOrder"
@@ -10012,6 +10019,10 @@
             "taskRequest": {
               "requestType": "ReqTaskRequest",
               "responseType": "ResCommon"
+            },
+            "yostarDeleteAccount": {
+              "requestType": "ReqYostarDeleteAccount",
+              "responseType": "ResYostarDeleteAccount"
             },
             "simulationActivityTrain": {
               "requestType": "ReqSimulationActivityTrain",
@@ -13390,6 +13401,50 @@
             "order_id": {
               "type": "string",
               "id": 2
+            }
+          }
+        },
+        "ReqCreateYostarV4SDKOrder": {
+          "fields": {
+            "goods_id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "client_type": {
+              "type": "uint32",
+              "id": 2
+            },
+            "account_id": {
+              "type": "uint32",
+              "id": 3
+            },
+            "order_type": {
+              "type": "uint32",
+              "id": 4
+            },
+            "client_version_string": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "ResCreateYostarV4SDKOrder": {
+          "fields": {
+            "error": {
+              "type": "Error",
+              "id": 1
+            },
+            "order_id": {
+              "type": "string",
+              "id": 2
+            },
+            "notify_url": {
+              "type": "string",
+              "id": 3
+            },
+            "extra_data": {
+              "type": "string",
+              "id": 4
             }
           }
         },
@@ -17445,6 +17500,26 @@
               "rule": "repeated",
               "type": "uint32",
               "id": 1
+            }
+          }
+        },
+        "ReqYostarDeleteAccount": {
+          "fields": {
+            "server": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "ResYostarDeleteAccount": {
+          "fields": {
+            "error": {
+              "type": "Error",
+              "id": 1
+            },
+            "notify_url": {
+              "type": "string",
+              "id": 2
             }
           }
         },

@@ -31,7 +31,7 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "devtools-protocol": "^0.0.1596832",
-    "electron": "40.8.0",
+    "electron": "40.8.2",
     "electron-builder": "^26.8.1",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
@@ -41,11 +41,13 @@
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0",
+    "typescript-eslint": "^8.57.1",
     "wait-on": "^9.0.4"
   },
   "build": {
     "appId": "me.akagi.ng",
+    "compression": "normal",
+    "artifactName": "Akagi-NG-${version}-${os}-${arch}.${ext}",
     "productName": "Akagi-NG",
     "icon": "../assets/torii.ico",
     "electronLanguages": [
@@ -74,7 +76,7 @@
     "extraMetadata": {
       "main": "dist/main/main.js"
     },
-    "extraFiles": [
+    "extraResources": [
       {
         "from": "../dist/backend/akagi-ng",
         "to": "bin",
@@ -101,11 +103,18 @@
       "icon": "../assets/torii.ico"
     },
     "mac": {
-      "target": "dmg",
-      "icon": "../assets/torii.icns"
+      "target": "zip",
+      "icon": "../assets/torii.icns",
+      "category": "public.app-category.games",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "binaries": [
+        "Contents/Resources/bin/**/*",
+        "Contents/Resources/lib/**/*"
+      ]
     },
     "linux": {
-      "target": "AppImage",
+      "target": "tar.gz",
       "icon": "../assets/torii.png"
     },
     "copyright": "Copyright (C) 2026 Akagi-NG Contributors"

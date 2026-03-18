@@ -34,7 +34,7 @@ export const Footer: FC = memo(() => {
             className='footer-link'
           >
             <Scale className='h-3.5 w-3.5' />
-            <span>AGPLv3</span>
+            <span>License</span>
           </a>
           <div className='footer-divider' />
           <span className='text-[0.625rem] opacity-30'>
