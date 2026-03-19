@@ -5,13 +5,6 @@ import { fetchJson } from '@/lib/api-client';
 import type { SaveSettingsResponse, Settings } from '@/types';
 
 export async function fetchSettingsApi(): Promise<Settings> {
-  for (let i = 0; i < 20; i++) {
-    try {
-      return await fetchJson<Settings>(`/api/settings`);
-    } catch {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    }
-  }
   return fetchJson<Settings>(`/api/settings`);
 }
 

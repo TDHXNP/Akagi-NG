@@ -61,7 +61,7 @@
     "restart_required": "Settings changed, Please restart the application to apply the changes.",
     "restored_success": "Settings restored to defaults. Please restart the application to apply the changes.",
     "loading": "Loading settings…",
-    "load_error_desc": "Could not load settings. Please make sure the application is running properly."
+    "load_error_desc": "Could not load settings."
   },
   "common": {
     "enabled": "Enabled",
@@ -70,11 +70,13 @@
     "cancel": "Cancel",
     "error": "Error",
     "connection_failed": "Connection Failed",
-    "close": "Close"
+    "close": "Close",
+    "exit_app": "Exit Application"
   },
   "app": {
     "title": "Akagi Next-Generation",
     "launch_game": "Launch Game",
+    "startup_failed": "Failed to connect to the background service.",
     "launch_error": "Could not retrieve game URL. Please check settings.",
     "settings_title": "Akagi NG Settings",
     "settings_desc": "Application Configuration Panel",
@@ -122,7 +124,6 @@
     "bot_switch_failed": "Failed to switch AI model.",
     "bot_runtime_error": "AI model runtime error",
     "state_tracker_error": "Match state corrupted.",
-    "max_retries_exceeded": "Too many connection failures, please check your network or restart the application.",
     "lib_missing": "Local core components (lib) are missing or incomplete. The application cannot run properly.",
     "models_missing": "Local model files (models) are missing. The application cannot run without an online model configured."
   }

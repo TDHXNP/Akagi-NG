@@ -83,7 +83,9 @@ export function registerIpcHandlers(windowManager: WindowManager, backendManager
 
   // Wait for backend to be ready (port 8765 bound)
   ipcMain.handle('wait-for-backend', async (_event, timeoutMs?: number) => {
-    return await backendManager.waitForReady(timeoutMs);
+    const isReady = await backendManager.waitForReady(timeoutMs);
+    if (!isReady) throw new Error('Backend failed to start');
+    return await backendManager.getBackendConfig();
   });
 
   // Sync locale across windows
@@ -103,10 +105,5 @@ export function registerIpcHandlers(windowManager: WindowManager, backendManager
       win.setBounds(bounds);
     }
     return true;
-  });
-
-  // Get backend host and port from settings
-  ipcMain.handle('get-backend-config', async () => {
-    return await backendManager.getBackendConfig();
   });
 }

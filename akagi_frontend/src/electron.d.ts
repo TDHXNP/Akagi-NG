@@ -1,3 +1,5 @@
+import type { ResourceStatus } from './types';
+
 // Electron IPC 通道类型定义
 
 // ===== Invoke 通道参数类型 =====
@@ -23,7 +25,6 @@ interface InvokeChannelParams {
     width?: number;
     height?: number;
   };
-  'get-backend-config': void;
 }
 
 // ===== Invoke 通道返回值类型 =====
@@ -35,18 +36,14 @@ interface InvokeChannelReturns {
   'minimize-window': boolean;
   'maximize-window': boolean;
   'is-window-maximized': boolean;
-  'check-resource-status': {
-    lib: boolean;
-    models: boolean;
-  };
+  'check-resource-status': ResourceStatus;
   'get-app-version': string;
-  'wait-for-backend': boolean;
-  'update-locale': boolean;
-  'set-window-bounds': boolean;
-  'get-backend-config': {
+  'wait-for-backend': {
     host: string;
     port: number;
   };
+  'update-locale': boolean;
+  'set-window-bounds': boolean;
 }
 
 // ===== On 通道事件参数类型 =====
@@ -54,20 +51,22 @@ interface OnChannelParams {
   'hud-visibility-changed': [visible: boolean];
   'window-state-changed': [maximized: boolean];
   'exit-animation-start': [];
-  majsoul_proto_updated: [];
-  majsoul_proto_update_failed: [error: string];
-  'backend-ready': [];
   'locale-changed': [locale: string];
 }
 
-// ===== 类型安全的 Electron API =====
+// ===== Electron IPC API =====
 export interface ElectronApi {
   /**
    * 向主进程发送单向消息
    * @param channel - IPC 通道名称
-   * @param data - 要发送的数据
+   * @param args - 要发送的数据
    */
-  send: <K extends keyof InvokeChannelParams>(channel: K, data?: InvokeChannelParams[K]) => void;
+  send: <K extends keyof InvokeChannelParams>(
+    channel: K,
+    ...args: undefined extends InvokeChannelParams[K]
+      ? [data?: InvokeChannelParams[K]]
+      : [data: InvokeChannelParams[K]]
+  ) => void;
 
   /**
    * 监听来自主进程的消息
@@ -83,12 +82,14 @@ export interface ElectronApi {
   /**
    * 向主进程发送请求并等待响应
    * @param channel - IPC 通道名称
-   * @param data - 要发送的数据
+   * @param args - 要发送的数据
    * @returns Promise,解析为响应数据
    */
   invoke: <K extends keyof InvokeChannelParams>(
     channel: K,
-    data?: InvokeChannelParams[K],
+    ...args: undefined extends InvokeChannelParams[K]
+      ? [data?: InvokeChannelParams[K]]
+      : [data: InvokeChannelParams[K]]
   ) => Promise<InvokeChannelReturns[K]>;
 }
 

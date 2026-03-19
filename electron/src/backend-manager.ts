@@ -27,6 +27,7 @@ export class BackendManager {
   private isReadyState: boolean = false;
   private readyPromise: Promise<void>;
   private resolveReady!: () => void;
+  private rejectReady!: (reason?: Error) => void;
 
   public async getBackendConfig(): Promise<{ host: string; port: number }> {
     const defaultHost = '127.0.0.1';
@@ -83,8 +84,9 @@ export class BackendManager {
   }
 
   constructor() {
-    this.readyPromise = new Promise((resolve) => {
+    this.readyPromise = new Promise((resolve, reject) => {
       this.resolveReady = resolve;
+      this.rejectReady = reject;
     });
     this.validator = new ResourceValidator(getProjectRoot());
   }
@@ -227,6 +229,9 @@ export class BackendManager {
     this.pyProcess.on('close', (code) => {
       console.log(`Backend process exited with code ${code}`);
       this.pyProcess = null;
+      if (!this.isReadyState) {
+        this.rejectReady(new Error(`Backend exited with code ${code}`));
+      }
     });
   }
 
@@ -245,7 +250,7 @@ export class BackendManager {
       setTimeout(() => resolve(false), timeoutMs);
     });
 
-    return Promise.race([this.readyPromise.then(() => true), timeoutPromise]);
+    return Promise.race([this.readyPromise.then(() => true).catch(() => false), timeoutPromise]);
   }
 
   public async stop() {

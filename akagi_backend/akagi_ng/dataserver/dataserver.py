@@ -72,8 +72,27 @@ class DataServer(threading.Thread):
             self.runner = web.AppRunner(app)
             self.loop.run_until_complete(self.runner.setup())
 
-            site = web.TCPSite(self.runner, self.host, self.external_port)
-            self.loop.run_until_complete(site.start())
+            max_retries = 10
+            bound = False
+            for port_offset in range(max_retries):
+                current_port = self.external_port + port_offset
+                try:
+                    site = web.TCPSite(self.runner, self.host, current_port)
+                    self.loop.run_until_complete(site.start())
+                    bound = True
+                    self.external_port = current_port
+                    break
+                except OSError:
+                    logger.warning(f"DataServer port {current_port} is in use or unavailable, trying next...")
+
+            if not bound:
+                msg = f"Could not bind to any port from {self.external_port} to {self.external_port + max_retries - 1}"
+                raise RuntimeError(msg)
+
+            if self.external_port != local_settings.server.port:
+                local_settings.server.port = self.external_port
+                local_settings.save()
+                logger.info(f"DataServer port conflicted. Switched to {self.external_port}.")
 
             logger.info(f"DataServer listening on {self.host}:{self.external_port}")
             self.running = True

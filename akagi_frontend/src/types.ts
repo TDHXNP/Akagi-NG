@@ -85,11 +85,7 @@ export type PathValue<T, P extends readonly unknown[]> = P extends [infer K]
 
 export type Theme = 'light' | 'dark' | 'system';
 
-export type SSEErrorCode =
-  | 'max_retries_exceeded'
-  | 'online_service_reconnecting'
-  | 'config_error'
-  | 'service_disconnected';
+export type SSEErrorCode = 'config_error' | 'service_disconnected';
 
 export interface ResourceStatus {
   lib: boolean;

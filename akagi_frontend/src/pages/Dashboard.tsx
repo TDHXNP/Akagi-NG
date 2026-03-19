@@ -8,7 +8,7 @@ import { Header } from '@/components/layout/Header';
 import SettingsPanel from '@/components/SettingsPanel';
 import StreamPlayer from '@/components/StreamPlayer';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
-import { APP_SPLASH_DELAY_MS, TOAST_DURATION_DEFAULT } from '@/config/constants';
+import { APP_SPLASH_DURATION_MS, TOAST_DURATION_DEFAULT } from '@/config/constants';
 import { GameContext } from '@/contexts/GameContext';
 import { fetchSettingsApi, useSettings } from '@/hooks/useSettings';
 import { useTheme } from '@/hooks/useTheme';
@@ -51,7 +51,7 @@ function Dashboard({ settingsPromise }: DashboardProps) {
     setIsMounted(true);
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, APP_SPLASH_DELAY_MS);
+    }, APP_SPLASH_DURATION_MS);
 
     // 检查可选/关键资源
     window.electron.invoke('check-resource-status').then((status) => {
@@ -132,13 +132,13 @@ function Dashboard({ settingsPromise }: DashboardProps) {
       {showSplash && (
         <LaunchScreen
           isStatic
-          className='animate-out fade-out zoom-out-95 fill-mode-forwards pointer-events-none fixed inset-0 z-50 duration-1000'
+          className='animate-out fade-out zoom-out-95 fill-mode-forwards pointer-events-none fixed inset-0 z-50 duration-1200'
         />
       )}
 
       <div
         className={cn(
-          'ease-premium flex h-full flex-col transition-all duration-1000',
+          'ease-premium flex h-full flex-col transition-all duration-1200',
           isMounted ? 'blur-0 opacity-100' : 'opacity-0 blur-xl',
         )}
       >

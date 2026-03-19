@@ -16,16 +16,12 @@ const VALID_INVOKE_CHANNELS = [
   'wait-for-backend',
   'update-locale',
   'set-window-bounds',
-  'get-backend-config',
 ] as const;
 
 const VALID_ON_CHANNELS = [
   'hud-visibility-changed',
   'window-state-changed',
   'exit-animation-start',
-  'majsoul_proto_updated',
-  'majsoul_proto_update_failed',
-  'backend-ready',
   'locale-changed',
 ] as const;
 

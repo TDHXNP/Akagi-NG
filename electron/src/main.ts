@@ -22,30 +22,30 @@ process.on('unhandledRejection', (reason) => {
 });
 
 app.whenReady().then(async () => {
-  // 1. Create Dashboard Window immediately to avoid white screen/no window during backend start
-  await windowManager.createDashboardWindow();
-
-  // 2. Register all IPC handlers
+  // 1. Register all IPC handlers
   registerIpcHandlers(windowManager, backendManager);
 
-  // 3. Start Python Backend
+  // 2. Start Python Backend
   backendManager.start();
+
+  // 3. Create Dashboard Window (no await here so the loop isn't blocked by slow DOM loads)
+  windowManager.createDashboardWindow();
 
   // 4. Try to detect backend readiness (informative only, don't block the UI further)
   try {
-    const { host, port } = await backendManager.getBackendConfig();
     for (let i = 0; i < BACKEND_STARTUP_CHECK_RETRIES; i++) {
+      if (!backendManager.isRunning()) {
+        console.warn('[Main] Backend process has stopped. Aborting readiness check.');
+        break;
+      }
       try {
+        const { host, port } = await backendManager.getBackendConfig();
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), BACKEND_STARTUP_CHECK_TIMEOUT_MS);
         await fetch(`http://${host}:${port}`, { signal: controller.signal });
         clearTimeout(timeoutId);
         console.log(`[Main] Backend port ${port} is ready.`);
         backendManager.markReady();
-        // Notify any windows that might be waiting
-        BrowserWindow.getAllWindows().forEach((win) => {
-          win.webContents.send('backend-ready');
-        });
         break;
       } catch {
         await new Promise((resolve) => setTimeout(resolve, BACKEND_STARTUP_CHECK_INTERVAL_MS));

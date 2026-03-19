@@ -61,7 +61,7 @@
     "restart_required": "設定が変更されました。変更を反映するにはアプリを再起動してください。",
     "restored_success": "設定がデフォルトに戻されました。変更を反映するにはアプリを再起動してください。",
     "loading": "設定を読み込み中…",
-    "load_error_desc": "設定を読み込めませんでした。アプリが正しく起動しているか確認してください。"
+    "load_error_desc": "設定を読み込めませんでした。"
   },
   "common": {
     "enabled": "有効",
@@ -70,11 +70,13 @@
     "cancel": "キャンセル",
     "error": "エラー",
     "connection_failed": "接続失敗",
-    "close": "閉じる"
+    "close": "閉じる",
+    "exit_app": "アプリを終了"
   },
   "app": {
     "title": "Akagi Next-Generation",
     "launch_game": "ゲームを起動",
+    "startup_failed": "バックグラウンドサービスへの接続に失敗しました。",
     "launch_error": "ゲームのURLを取得できません。設定を確認してください。",
     "settings_title": "Akagi NG 設定",
     "settings_desc": "アプリケーション設定パネル",
@@ -122,7 +124,6 @@
     "bot_switch_failed": "AIモデルの切り替えに失敗しました。",
     "bot_runtime_error": "AIモデルの実行異常",
     "state_tracker_error": "対局状態に異常が発生しました。",
-    "max_retries_exceeded": "接続失敗が多すぎます。ネットワークを確認するか、アプリケーションを再起動してください。",
     "lib_missing": "コアコンポーネントファイル (lib) が不足しているか不完全です。アプリケーションは正常に動作しません。",
     "models_missing": "ローカルモデルファイル (models) が不足しています。オンラインモデルが設定されていない場合、アプリケーションは動作しません。"
   }

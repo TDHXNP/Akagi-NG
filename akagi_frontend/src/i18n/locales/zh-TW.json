@@ -61,7 +61,7 @@
     "restart_required": "設定已變更，請重新啟動應用程式以套用變更",
     "restored_success": "設定已恢復為預設值，請重新啟動應用程式以套用變更",
     "loading": "正在載入設定…",
-    "load_error_desc": "無法載入設定，請確認應用程式已正確啟動"
+    "load_error_desc": "無法載入設定。"
   },
   "common": {
     "enabled": "已啟用",
@@ -70,11 +70,13 @@
     "cancel": "取消",
     "error": "發生錯誤",
     "connection_failed": "連線失敗",
-    "close": "關閉"
+    "close": "關閉",
+    "exit_app": "退出應用程式"
   },
   "app": {
     "title": "Akagi Next-Generation",
     "launch_game": "啟動遊戲",
+    "startup_failed": "應用程式無法連線至後台服務。",
     "launch_error": "無法取得游戏 URL，請檢查設定",
     "settings_title": "Akagi NG 設定",
     "settings_desc": "應用配置面板",
@@ -122,7 +124,6 @@
     "bot_switch_failed": "AI 模型切換失敗",
     "bot_runtime_error": "AI 模型運行異常",
     "state_tracker_error": "對局狀態異常",
-    "max_retries_exceeded": "連線失敗次數過多，請檢查網路或重新啟動應用程式。",
     "lib_missing": "本地核心組件 (lib) 缺失或不完整。程式無法正常運作。",
     "models_missing": "本地模型檔案 (models) 缺失。若未設定線上模型，程式將無法運作。"
   }

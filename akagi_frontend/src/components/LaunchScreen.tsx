@@ -8,13 +8,7 @@ export function LaunchScreen({
   isStatic?: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        'flex min-h-screen flex-col items-center justify-center transition-opacity duration-500',
-        !isStatic && 'animate-in fade-in zoom-in-95',
-        className,
-      )}
-    >
+    <div className={cn('flex min-h-screen flex-col items-center justify-center', className)}>
       <div className='flex flex-col items-center space-y-8 p-8'>
         {/* Logo Container with Glow Effect */}
         <div className='relative'>
@@ -35,7 +29,7 @@ export function LaunchScreen({
             className={cn(
               'text-3xl font-bold tracking-tight duration-1000 lg:text-4xl',
               !isStatic &&
-                'animate-in fade-in slide-in-from-bottom-4 fill-mode-backwards delay-150',
+                'animate-in fade-in slide-in-from-bottom-4 fill-mode-backwards delay-100',
             )}
           >
             Akagi <span className='text-rose-500'>NG</span>
@@ -44,7 +38,7 @@ export function LaunchScreen({
             className={cn(
               'text-muted-foreground text-sm font-medium tracking-wide uppercase duration-1000',
               !isStatic &&
-                'animate-in fade-in slide-in-from-bottom-4 fill-mode-backwards delay-300',
+                'animate-in fade-in slide-in-from-bottom-4 fill-mode-backwards delay-200',
             )}
           >
             Next Generation Mahjong AI
