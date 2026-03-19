@@ -33,9 +33,9 @@ const defaultSettings: Settings = {
     port: 8765,
   },
   ot: {
-    online: true,
-    server: 'http://127.0.0.1:8765',
-    api_key: 'mock',
+    online: false,
+    server: '',
+    api_key: '',
   },
   model_config: {
     model_4p: 'mortal.pth',

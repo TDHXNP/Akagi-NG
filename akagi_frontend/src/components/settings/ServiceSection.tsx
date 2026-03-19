@@ -29,6 +29,11 @@ export const ServiceSection: FC<ServiceSectionProps> = memo(({ settings, updateS
         <SettingsItem label={t('settings.server.port')}>
           <Input
             type='number'
+            className={
+              settings.mitm.enabled && settings.mitm.port === settings.server.port
+                ? 'border-destructive focus-visible:ring-destructive'
+                : ''
+            }
             value={settings.server.port}
             onChange={(e) => {
               const next = parseInt(e.target.value, 10);

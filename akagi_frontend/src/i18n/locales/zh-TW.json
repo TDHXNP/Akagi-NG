@@ -55,8 +55,7 @@
       "temperature_desc": "調整各推薦選項之間的信心差距。較低的溫度會使最高概率的選項更加突出，較高的溫度會使各選項概率更接近。",
       "no_models_found": "未找到本地模型"
     },
-    "saved_success": "設定已更新，請在頁面中確認",
-    "status_saved": "所有變更已儲存",
+    "status_saved": "儲存成功",
     "status_saving": "正在儲存…",
     "status_error": "儲存失敗",
     "restart_required": "設定已變更，請重新啟動應用程式以套用變更",

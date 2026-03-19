@@ -108,7 +108,8 @@ async def save_settings_handler(request: web.Request) -> web.Response:
             or payload.get("mitm") != old_settings.get("mitm")
             or payload.get("server") != old_settings.get("server")
             or payload.get("ot") != old_settings.get("ot")
-            or payload.get("model_config", {}).get("device") != old_settings.get("model_config", {}).get("device")
+            or payload.get("model_config", {}).get("model_4p") != old_settings.get("model_config", {}).get("model_4p")
+            or payload.get("model_config", {}).get("model_3p") != old_settings.get("model_config", {}).get("model_3p")
         ):
             restart_required = True
 

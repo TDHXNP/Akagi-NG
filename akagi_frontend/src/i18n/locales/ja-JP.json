@@ -55,7 +55,6 @@
       "temperature_desc": "推奨事項間の信頼度の差を調整します。温度が低いほどトップの選択肢が明確になり、温度が高いほど各選択肢の信頼度が近くなります。",
       "no_models_found": "ローカルモデルが見つかりません"
     },
-    "saved_success": "設定が更新されました。",
     "status_saved": "保存済み",
     "status_saving": "保存中…",
     "status_error": "保存に失敗しました。",

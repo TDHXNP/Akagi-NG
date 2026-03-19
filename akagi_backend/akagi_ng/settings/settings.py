@@ -193,7 +193,7 @@ def get_default_settings_dict() -> dict:
             "upstream": "",
         },
         "server": {"host": "127.0.0.1", "port": 8765},
-        "ot": {"online": False, "server": "http://127.0.0.1:5000", "api_key": "<YOUR_API_KEY>"},
+        "ot": {"online": False, "server": "", "api_key": ""},
         "model_config": {
             "model_4p": "mortal.pth",
             "model_3p": "mortal3p.pth",
@@ -208,13 +208,20 @@ def get_settings_dict() -> dict:
 
 
 def verify_settings(data: dict) -> bool:
-    """根据 schema 验证设置"""
+    """根据 schema 和附加规则验证设置"""
     try:
         jsonschema.validate(data, _get_schema())
-        return True
     except ValidationError as e:
         logger.error(f"Settings validation error: {e.message}")
         return False
+
+    mitm_port = data.get("mitm", {}).get("port")
+    server_port = data.get("server", {}).get("port")
+    if mitm_port and server_port and mitm_port == server_port:
+        logger.error(f"Settings validation error: mitm proxy port '{mitm_port}' cannot be the same as server port")
+        return False
+
+    return True
 
 
 def _load_settings() -> Settings:

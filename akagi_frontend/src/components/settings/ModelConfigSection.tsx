@@ -53,17 +53,27 @@ export const ModelConfigSection: FC<ModelConfigSectionProps> = memo(
                 <div className='space-y-4'>
                   <SettingsItem label={t('settings.model_config.server_url')}>
                     <Input
+                      className={
+                        !settings.ot.server
+                          ? 'border-destructive focus-visible:ring-destructive'
+                          : ''
+                      }
                       value={settings.ot.server}
                       onChange={(e) => updateSetting(['ot', 'server'], e.target.value)}
-                      placeholder='https://api.example.com'
+                      placeholder='http://[IP_ADDRESS]'
                     />
                   </SettingsItem>
                   <SettingsItem label={t('settings.model_config.api_key')}>
                     <Input
                       type='password'
+                      className={
+                        !settings.ot.api_key
+                          ? 'border-destructive focus-visible:ring-destructive'
+                          : ''
+                      }
                       value={settings.ot.api_key}
                       onChange={(e) => updateSetting(['ot', 'api_key'], e.target.value)}
-                      placeholder='sk-...'
+                      placeholder='<YOUR_API_KEY>'
                     />
                   </SettingsItem>
                 </div>

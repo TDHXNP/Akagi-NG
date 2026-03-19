@@ -47,7 +47,7 @@
       "mode_selection": "模型选择",
       "online_mode": "在线模型",
       "server_url": "服务器地址",
-      "api_key": "API Key",
+      "api_key": "API 密钥",
       "local_mode": "本地模型",
       "model_4p": "四麻模型",
       "model_3p": "三麻模型",
@@ -55,8 +55,7 @@
       "temperature_desc": "调整各推荐选项之间的信心差距。较低的温度会使最高概率的选项更加突出，较高的温度会使各选项概率更接近。",
       "no_models_found": "未找到本地模型"
     },
-    "saved_success": "设置已更新，请在页面中确认",
-    "status_saved": "所有更改已保存",
+    "status_saved": "保存成功",
     "status_saving": "正在保存…",
     "status_error": "保存失败",
     "restart_required": "设置已更改，请重新启动应用以使更改生效",

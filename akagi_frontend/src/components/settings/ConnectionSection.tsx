@@ -54,6 +54,11 @@ export const ConnectionSection: FC<ConnectionSectionProps> = memo(({ settings, u
           <SettingsItem label={t('settings.connection.mitm.port')}>
             <Input
               type='number'
+              className={
+                settings.mitm.port === settings.server.port
+                  ? 'border-destructive focus-visible:ring-destructive'
+                  : ''
+              }
               value={settings.mitm.port}
               onChange={(e) => updateSetting(['mitm', 'port'], parseInt(e.target.value) || 0)}
             />
