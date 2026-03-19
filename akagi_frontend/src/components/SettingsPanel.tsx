@@ -32,6 +32,7 @@ const SettingsPanel: FC<SettingsPanelProps> = memo(({ open, onClose }) => {
   const {
     settings,
     restartRequired,
+    isRestored,
     updateSetting,
     updateSettingsBatch,
     restoreDefaults,
@@ -56,12 +57,13 @@ const SettingsPanel: FC<SettingsPanelProps> = memo(({ open, onClose }) => {
         <ModalTitle>{t('app.settings_title')}</ModalTitle>
         <ModalDescription>{t('app.settings_desc')}</ModalDescription>
         {restartRequired && (
-          <StatusBar
-            variant='warning'
-            className='mt-4 items-center justify-center text-center'
-            icon={AlertTriangle}
-          >
+          <StatusBar variant='warning' className='mt-4 items-center justify-center text-center'>
             {t('settings.restart_required')}
+          </StatusBar>
+        )}
+        {isRestored && (
+          <StatusBar variant='info' className='mt-4 items-center justify-center text-center'>
+            {t('settings.restored_success')}
           </StatusBar>
         )}
       </ModalHeader>

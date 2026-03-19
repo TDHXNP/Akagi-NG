@@ -6,6 +6,7 @@ export interface SettingsContextType {
   settings: Settings | null;
   saveStatus: 'saved' | 'saving' | 'error';
   restartRequired: boolean;
+  isRestored: boolean;
   updateSetting: <P extends Paths<Settings>>(
     path: readonly [...P],
     value: PathValue<Settings, P>,

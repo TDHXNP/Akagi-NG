@@ -20,6 +20,7 @@ interface State {
   settings: Settings;
   saveStatus: SaveStatus;
   restartRequired: boolean;
+  isRestored: boolean;
   // 可用模型列表
   availableModels: string[];
 }
@@ -90,7 +91,7 @@ function settingsReducer(state: State, action: Action): State {
       return {
         ...state,
         settings: action.payload,
-        restartRequired: true,
+        isRestored: true,
       };
 
     case 'SET_SAVE_STATUS':
@@ -119,10 +120,11 @@ export function SettingsProvider({ children, initialSettings }: SettingsProvider
     settings: initialSettings,
     saveStatus: 'saved',
     restartRequired: false,
+    isRestored: false,
     availableModels: [],
   });
 
-  const { settings, saveStatus, restartRequired, availableModels } = state;
+  const { settings, saveStatus, restartRequired, isRestored, availableModels } = state;
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
   const toastId = useRef<string | number | null>(null);
@@ -231,7 +233,6 @@ export function SettingsProvider({ children, initialSettings }: SettingsProvider
     try {
       const data = await resetSettingsApi();
       dispatch({ type: 'RESTORE_SUCCESS', payload: data });
-      notify.success(i18n.t('settings.restored_success'));
     } catch (e) {
       console.error('Restore Defaults error:', e);
     }
@@ -300,6 +301,7 @@ export function SettingsProvider({ children, initialSettings }: SettingsProvider
       settings,
       saveStatus,
       restartRequired,
+      isRestored,
       updateSetting,
       updateSettingsBatch,
       restoreDefaults,
@@ -310,6 +312,7 @@ export function SettingsProvider({ children, initialSettings }: SettingsProvider
       settings,
       saveStatus,
       restartRequired,
+      isRestored,
       updateSetting,
       updateSettingsBatch,
       restoreDefaults,
