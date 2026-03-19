@@ -191,6 +191,7 @@ export class BackendManager {
 
     try {
       this.pyProcess = spawn(binaryPath, [], {
+        cwd: getProjectRoot(),
         env: {
           ...process.env,
           PYTHONUNBUFFERED: '1',

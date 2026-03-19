@@ -7,7 +7,9 @@ import path from 'path';
  * 在打包模式下，是 Resources 目录的父目录（即包含 bin, config, lib, models 等文件夹的目录）。
  */
 export function getProjectRoot(): string {
-  return !app.isPackaged ? path.resolve(__dirname, '../../') : process.resourcesPath;
+  return !app.isPackaged
+    ? path.resolve(__dirname, '../../')
+    : path.join(process.resourcesPath, '..');
 }
 
 /**

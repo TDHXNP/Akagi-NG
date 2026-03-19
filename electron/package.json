@@ -76,7 +76,7 @@
     "extraMetadata": {
       "main": "dist/main/main.js"
     },
-    "extraResources": [
+    "extraFiles": [
       {
         "from": "../dist/backend/akagi-ng",
         "to": "bin",
@@ -109,8 +109,8 @@
       "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",
       "binaries": [
-        "Contents/Resources/bin/**/*",
-        "Contents/Resources/lib/**/*"
+        "Contents/bin/**/*",
+        "Contents/lib/**/*"
       ]
     },
     "linux": {

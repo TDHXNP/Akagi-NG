@@ -290,6 +290,16 @@ export class WindowManager {
       }
     }
 
+    if (this.gameWindow && !this.gameWindow.isDestroyed()) {
+      this.gameWindow.on('closed', () => {
+        if (this.gameHandler) {
+          this.gameHandler.detach();
+          this.gameHandler = null;
+        }
+        this.gameWindow = null;
+      });
+    }
+
     try {
       await this.gameWindow.loadURL(targetUrl);
     } catch (err) {
@@ -311,16 +321,6 @@ export class WindowManager {
         this.gameWindow = null;
         throw err;
       }
-    }
-
-    if (this.gameWindow && !this.gameWindow.isDestroyed()) {
-      this.gameWindow.on('closed', () => {
-        if (this.gameHandler) {
-          this.gameHandler.detach();
-          this.gameHandler = null;
-        }
-        this.gameWindow = null;
-      });
     }
   }
 }
