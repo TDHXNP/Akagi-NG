@@ -364,20 +364,16 @@ def test_attach_riichi_lookahead_all_branches(tracker):
 
     # Multi-path test
     recs = [{"action": "reach"}]
-    with patch.object(tracker.__class__, "discardable_tiles_riichi_declaration", new_callable=PropertyMock) as mock_dt:
-        mock_dt.return_value = ["1m"]
+    with patch("akagi_ng.mjai_bot.tracker.meta_to_recommend") as mock_m2r:
+        # 1. Valid rec
+        mock_m2r.return_value = [("1m", 0.9), ("2m", 0.8)]
+        tracker._attach_riichi_lookahead(recs)
+        assert len(recs[0]["sim_candidates"]) == 2
 
-        with patch("akagi_ng.mjai_bot.tracker.meta_to_recommend") as mock_m2r:
-            # 1. Valid rec
-            mock_m2r.return_value = [("1m", 0.9), ("2m", 0.8)]
-            tracker._attach_riichi_lookahead(recs)
-            assert len(recs[0]["sim_candidates"]) == 1
-
-            # 2. Limit test
-            mock_m2r.return_value = [(str(i), 0.5) for i in range(20)]
-            mock_dt.return_value = None  # all valid
-            tracker._attach_riichi_lookahead(recs)
-            assert len(recs[0]["sim_candidates"]) == 5
+        # 2. Limit test
+        mock_m2r.return_value = [(str(i), 0.5) for i in range(20)]
+        tracker._attach_riichi_lookahead(recs)
+        assert len(recs[0]["sim_candidates"]) == 5
 
 
 def test_build_recommendations_comprehensive(tracker):

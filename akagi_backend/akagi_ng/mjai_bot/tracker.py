@@ -119,10 +119,6 @@ class StateTracker(StateTrackerProtocol):
 
         return result
 
-    @property
-    def discardable_tiles_riichi_declaration(self) -> list[str]:
-        return self.player_state.discardable_tiles_riichi_declaration() if self.player_state else []
-
     def build_recommendations(self, response: MJAIResponse) -> FullRecommendationData | None:
         """构建发送到 DataServer 的 Payload"""
         try:
@@ -289,11 +285,9 @@ class StateTracker(StateTrackerProtocol):
             if not lookahead_recs:
                 return
 
-            valid_discards = self.discardable_tiles_riichi_declaration
             sim_candidates: list[SimCandidate] = [
                 SimCandidate(tile=act, confidence=float(conf))
                 for act, conf in lookahead_recs
-                if not valid_discards or act in valid_discards
             ][: MahjongConstants.MIN_RIICHI_CANDIDATES]
 
             for item in recommendations:
