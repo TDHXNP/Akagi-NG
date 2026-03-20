@@ -83,10 +83,6 @@
         "to": "."
       },
       {
-        "from": "../README.txt",
-        "to": "."
-      },
-      {
         "from": "../dist/backend/akagi-ng",
         "to": "bin"
       }
@@ -94,7 +90,17 @@
     "npmRebuild": false,
     "win": {
       "target": "zip",
-      "icon": "../assets/torii.ico"
+      "icon": "../assets/torii.ico",
+      "extraFiles": [
+        {
+          "from": "../README.txt",
+          "to": "."
+        },
+        {
+          "from": "../LICENSE",
+          "to": "."
+        }
+      ]
     },
     "mac": {
       "target": "dmg",
@@ -106,7 +112,17 @@
     },
     "linux": {
       "target": "AppImage",
-      "icon": "../assets/torii.png"
+      "icon": "../assets/torii.png",
+      "extraFiles": [
+        {
+          "from": "../README.txt",
+          "to": "."
+        },
+        {
+          "from": "../LICENSE",
+          "to": "."
+        }
+      ]
     },
     "copyright": "Copyright (C) 2026 Akagi-NG Contributors"
   }

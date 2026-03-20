@@ -4,7 +4,7 @@ import path from 'path';
 const rootDir = path.resolve(__dirname, '../../');
 const extraDir = path.join(rootDir, 'build', 'extra');
 
-// Ensure extraDir exists
+// 0. Ensure extraDir exists
 if (fs.existsSync(extraDir)) {
   fs.rmSync(extraDir, { recursive: true, force: true });
 }
@@ -12,15 +12,7 @@ fs.mkdirSync(extraDir, { recursive: true });
 
 console.log('📦 Preparing release assets...');
 
-// 1. LICENSE.txt
-
-const licenseSource = path.join(rootDir, 'LICENSE');
-if (fs.existsSync(licenseSource)) {
-  fs.copyFileSync(licenseSource, path.join(extraDir, 'LICENSE.txt'));
-  console.log('   ✅ LICENSE.txt created');
-}
-
-// 2. Create target folders
+// 1. Create target folders
 ['lib', 'models', 'logs', 'config'].forEach((folder) => {
   const folderPath = path.join(extraDir, folder);
   if (!fs.existsSync(folderPath)) {
@@ -28,7 +20,7 @@ if (fs.existsSync(licenseSource)) {
   }
 });
 
-// 3. Bundle Models
+// 2. Bundle Models
 ['mortal.pth', 'mortal3p.pth', 'LICENSE'].forEach((modelFile) => {
   const src = path.join(rootDir, 'models', modelFile);
   if (fs.existsSync(src)) {
@@ -37,7 +29,7 @@ if (fs.existsSync(licenseSource)) {
   }
 });
 
-// 4. Bundle and rename libriichi for current platform
+// 3. Bundle and rename libriichi for current platform
 import os from 'os';
 const platform = os.platform();
 
@@ -68,7 +60,7 @@ const archStr = platform === 'darwin' ? 'aarch64' : 'x86_64';
   }
 });
 
-// Copy lib/LICENSE
+// 4. Copy lib/LICENSE
 const libLicense = path.join(rootDir, 'lib', 'LICENSE');
 if (fs.existsSync(libLicense)) {
   fs.copyFileSync(libLicense, path.join(extraDir, 'lib', 'LICENSE'));
