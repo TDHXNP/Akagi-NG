@@ -46,7 +46,7 @@ const Recommendation: FC<Recommendation> = ({
   return (
     <div
       className={cn(
-        'group will-change-transform-opacity relative mx-auto w-full',
+        'group relative mx-auto w-full',
         'animate-in fade-in slide-in-from-bottom-4 ease-premium duration-500',
       )}
     >
@@ -76,12 +76,12 @@ const Recommendation: FC<Recommendation> = ({
         <div className='vertical-divider mr-10' />
 
         {/* Center: Tile Display Area */}
-        <div className='flex h-full grow items-center justify-start gap-8 overflow-x-auto overflow-y-hidden px-2'>
+        <div className='flex h-full grow items-center gap-8 overflow-x-auto overflow-y-hidden px-2'>
           {/* Case A: Riichi Declaration Candidates */}
           {hasSimCandidates ? (
             <div className='flex gap-8'>
               {sim_candidates.map((cand, idx) => (
-                <div key={idx} className='flex flex-row items-end gap-4'>
+                <div key={idx} className='flex items-end gap-4'>
                   {/* Tile */}
                   <MahjongTile tile={cand.tile} className='scale-110 shadow-md' />
                   {/* Show confidence for each candidate (only if > 1) */}
@@ -117,7 +117,7 @@ const Recommendation: FC<Recommendation> = ({
         </div>
 
         {/* Right: Confidence */}
-        <div className='ml-6 flex flex-col items-center justify-center'>
+        <div className='ml-6 flex items-center justify-center'>
           <ConfidenceRing percentage={confidence} color={effectiveConfig.color} />
         </div>
       </div>

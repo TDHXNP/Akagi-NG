@@ -3,7 +3,7 @@ import type { PointerEvent } from 'react';
 import { useRef } from 'react';
 
 import StreamPlayer from '@/components/StreamPlayer';
-import { Button } from '@/components/ui/button';
+import { HudControlButton } from '@/components/ui/hud-control-button';
 import { ModelStatusIndicator } from '@/components/ui/model-status-indicator';
 import { HUD_MAX_WIDTH, HUD_MIN_WIDTH } from '@/config/constants';
 
@@ -68,49 +68,41 @@ export default function Hud() {
   };
 
   return (
-    <div className='draggable group relative flex h-screen w-full items-center justify-center overflow-hidden bg-transparent'>
+    <div className='draggable relative h-screen w-full overflow-hidden'>
       <StreamPlayer className='h-full w-full' />
 
       {/* Model Status Indicator */}
       <ModelStatusIndicator className='top-3 left-3' />
 
       {/* Close Button */}
-      <div className='no-drag absolute top-2 right-2 z-60 opacity-40 transition-opacity hover:opacity-100'>
-        <Button
-          variant='ghost'
-          size='icon'
-          className='h-6 w-6 rounded-full bg-transparent text-white hover:bg-white/20 dark:text-zinc-200 dark:hover:bg-zinc-800/50'
-          onClick={() => window.electron.invoke('toggle-hud', false)}
-        >
-          <X className='h-4 w-4' />
-        </Button>
-      </div>
+      <HudControlButton
+        className='absolute top-2 right-2'
+        onClick={() => window.electron.invoke('toggle-hud', false)}
+      >
+        <X className='h-4 w-4' />
+      </HudControlButton>
 
       {/* Resize Handle */}
-      <div className='no-drag absolute right-1 bottom-1 z-60 opacity-40 transition-opacity hover:opacity-100'>
-        <Button
-          variant='ghost'
-          size='icon'
-          className='h-6 w-6 cursor-nwse-resize rounded-full bg-transparent text-white hover:bg-white/20 dark:text-zinc-200 dark:hover:bg-zinc-800/50'
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp} // 安全兜底
+      <HudControlButton
+        className='absolute right-1 bottom-1 cursor-nwse-resize'
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp} // 安全兜底
+      >
+        <svg
+          width='12'
+          height='12'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
         >
-          <svg
-            width='12'
-            height='12'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            strokeLinecap='round'
-          >
-            <line x1='22' y1='10' x2='10' y2='22' />
-            <line x1='22' y1='16' x2='16' y2='22' />
-          </svg>
-        </Button>
-      </div>
+          <line x1='22' y1='10' x2='10' y2='22' />
+          <line x1='22' y1='16' x2='16' y2='22' />
+        </svg>
+      </HudControlButton>
     </div>
   );
 }

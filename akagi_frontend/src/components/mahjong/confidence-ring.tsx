@@ -108,10 +108,7 @@ export const ConfidenceRing: FC<ConfidenceRingProps> = memo(
         : 1;
 
     return (
-      <div
-        style={{ width: size, height: size }}
-        className='relative flex items-center justify-center'
-      >
+      <div style={{ width: size, height: size }} className='relative'>
         {/* Background Ring */}
         <svg className='h-full w-full -rotate-90 transform overflow-visible'>
           {/* Main Background Track */}
@@ -179,7 +176,7 @@ export const ConfidenceRing: FC<ConfidenceRingProps> = memo(
           </div>
         )}
 
-        <div className='absolute inset-0 flex flex-col items-center justify-center'>
+        <div className='absolute inset-0 flex items-center justify-center'>
           <span className={cn(fontSize, 'font-mono font-bold text-zinc-700 dark:text-zinc-200')}>
             {(currentPercentage * 100).toFixed(0)}
             <span className='text-[0.6em]'>%</span>

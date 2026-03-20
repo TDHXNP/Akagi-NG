@@ -19,7 +19,7 @@ interface StreamPlayerProps {
 const HudOverlay = memo(() => {
   const { t } = useTranslation();
   return (
-    <div className='stream-player-overlay'>
+    <div className='flex h-full w-full flex-col items-center justify-center gap-4 p-8 text-center'>
       <div className='flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-pink-500/20 to-violet-500/20 dark:from-pink-500/10 dark:to-violet-500/10'>
         <Monitor className='h-10 w-10 text-pink-500 dark:text-pink-400' />
       </div>
@@ -79,10 +79,7 @@ const StreamPlayer: FC<StreamPlayerProps> = ({ className }) => {
   return (
     <div
       ref={wrapperRef}
-      className={cn(
-        'flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-6',
-        className,
-      )}
+      className={cn('flex min-h-0 w-full flex-1 items-center justify-center', className)}
     >
       <div
         ref={containerRef}
@@ -91,7 +88,7 @@ const StreamPlayer: FC<StreamPlayerProps> = ({ className }) => {
           height: containerSize.height,
         }}
         className={cn(
-          'stream-player-container flex shrink-0 items-center justify-center',
+          'relative flex shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-lg dark:border-white/5 dark:bg-black/20',
           isHudPage && 'shadow-none',
         )}
       >

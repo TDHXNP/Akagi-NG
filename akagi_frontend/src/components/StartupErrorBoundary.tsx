@@ -11,7 +11,7 @@ export function StartupErrorBoundary({ children }: { children: ReactNode }) {
   return (
     <ErrorBoundary
       fallback={(error: Error) => (
-        <div className='bg-background text-foreground flex h-screen w-screen flex-col items-center justify-center p-8 text-center tracking-tight'>
+        <div className='bg-background text-foreground flex min-h-screen w-full flex-col items-center justify-center p-8 text-center tracking-tight'>
           <CircleX className='text-destructive mb-4 h-10 w-10' />
           <h3 className='text-destructive mb-2 text-lg font-semibold'>
             {t('common.connection_failed')}

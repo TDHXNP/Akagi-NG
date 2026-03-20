@@ -82,9 +82,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <StartupErrorBoundary>
-        <Suspense
-          fallback={isHud ? <div className='h-screen w-screen bg-transparent' /> : <LaunchScreen />}
-        >
+        <Suspense fallback={isHud ? <div className='h-screen w-full' /> : <LaunchScreen />}>
           <AppInner />
         </Suspense>
       </StartupErrorBoundary>

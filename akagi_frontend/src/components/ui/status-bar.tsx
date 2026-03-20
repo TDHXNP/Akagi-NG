@@ -38,7 +38,7 @@ export const StatusBar: FC<StatusBarProps> = ({
       )}
       {...props}
     >
-      {Icon && <Icon className='h-4 w-4 shrink-0' />}
+      {Icon && <Icon className='h-4 w-4' />}
       {children}
     </div>
   );

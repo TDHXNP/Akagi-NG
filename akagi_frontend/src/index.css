@@ -46,7 +46,7 @@
 @layer components {
   /* 麻将牌 */
   .mahjong-tile-container {
-    @apply ease-premium relative flex h-28 w-20 flex-col items-center justify-start transition-transform duration-500;
+    @apply ease-premium relative flex h-28 w-20 flex-col items-center transition-transform duration-500;
   }
 
   .mahjong-tile-face {
@@ -63,10 +63,7 @@
 
   /* 组件：推荐卡片 */
   .glass-card {
-    @apply ease-premium relative flex h-44 items-center justify-between overflow-hidden rounded-3xl border border-white/40 bg-white/80 pr-8 pl-4 transition-all duration-500 dark:border-white/5 dark:bg-zinc-950/75;
-    will-change: transform, opacity;
-    isolation: isolate;
-    transform: translateZ(0);
+    @apply ease-premium relative flex h-44 items-center justify-between overflow-hidden rounded-3xl border border-white/40 bg-white/80 pr-8 pl-4 transition duration-500 dark:border-white/5 dark:bg-zinc-950/75;
   }
 
   .accent-strip {
@@ -103,27 +100,9 @@
     @apply border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/50 dark:bg-blue-900/20 dark:text-blue-200;
   }
 
-  /* 组件：流播放器 */
-  .stream-player-container {
-    @apply relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-lg dark:border-white/5 dark:bg-black/20;
-  }
-
-  .stream-player-overlay {
-    @apply ease-premium flex h-full w-full flex-col items-center justify-center gap-4 p-8 text-center transition-all duration-500;
-  }
-
-  /* 组件：提示（设置面板） */
-  .alert-box {
-    @apply flex items-center gap-2 rounded border p-3 text-sm;
-  }
-  .alert-warning {
-    @apply border-yellow-500/20 bg-yellow-500/10 text-yellow-600 dark:text-yellow-500;
-  }
-
   /* 组件：弹窗 */
   .modal-backdrop {
     @apply ease-premium absolute inset-0 bg-black/40 transition-opacity duration-300;
-    will-change: opacity, backdrop-filter;
   }
 
   .modal-backdrop.is-open {
@@ -135,8 +114,7 @@
   }
 
   .modal-content {
-    @apply ease-premium relative z-10 flex max-h-[90vh] w-full flex-col rounded-xl border border-zinc-300 bg-white shadow-2xl transition-all duration-500 dark:border-white/15 dark:bg-zinc-900;
-    will-change: transform, opacity;
+    @apply ease-premium relative z-10 flex max-h-[90vh] w-full flex-col rounded-xl border border-zinc-300 bg-white shadow-2xl transition duration-500 dark:border-white/15 dark:bg-zinc-900;
   }
 
   .modal-content.is-open {
@@ -148,38 +126,13 @@
   }
 
   /* 组件：设置 */
-  .settings-grid {
-    @apply grid grid-cols-1 gap-6 md:grid-cols-2;
-  }
-
   .settings-section-title {
     @apply border-border border-b pb-2 text-lg font-semibold;
-  }
-
-  /* 组件：页脚 */
-  .footer-link {
-    @apply flex items-center gap-1.5 opacity-60 transition-opacity hover:opacity-100;
-  }
-  .footer-divider {
-    @apply h-3 w-px bg-zinc-300 dark:bg-zinc-700;
   }
 
   /* 组件：Logo 光晕 */
   .logo-glow-effect {
     @apply absolute -inset-4 rounded-full bg-rose-500/20 blur-xl dark:bg-rose-500/10;
-  }
-
-  /* 性能提示 */
-  .will-change-transform {
-    will-change: transform;
-  }
-
-  .will-change-transform-opacity {
-    will-change: transform, opacity;
-  }
-
-  .will-change-filter {
-    @apply will-change-[opacity,backdrop-filter,filter];
   }
 }
 

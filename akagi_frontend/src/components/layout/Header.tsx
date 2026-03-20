@@ -10,11 +10,12 @@ import {
   X,
 } from 'lucide-react';
 import type { FC } from 'react';
-import { type ComponentProps, memo, use, useEffect, useState } from 'react';
+import { memo, use, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { ModelStatusIndicator } from '@/components/ui/model-status-indicator';
+import { NavbarActionButton as HeaderIconButton } from '@/components/ui/navbar-action-button';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { SUPPORTED_LOCALES } from '@/config/locales';
@@ -33,35 +34,6 @@ interface HeaderProps {
   isHudActive?: boolean;
   isConnected: boolean;
 }
-
-interface HeaderIconButtonProps extends ComponentProps<typeof Button> {
-  icon: typeof SettingsIcon;
-  iconClassName?: string;
-  badge?: boolean;
-}
-
-const HeaderIconButton: FC<HeaderIconButtonProps> = ({
-  icon: Icon,
-  className,
-  iconClassName,
-  badge,
-  ...props
-}) => (
-  <Button
-    variant='ghost'
-    size='icon'
-    className={cn(
-      'no-drag relative aspect-square h-full text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100',
-      className,
-    )}
-    {...props}
-  >
-    <Icon className={cn('h-5 w-5', iconClassName)} />
-    {badge && (
-      <span className='absolute top-1 right-1 flex h-2 w-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50' />
-    )}
-  </Button>
-);
 
 const HeaderContent: FC<HeaderProps> = memo(
   ({
@@ -90,8 +62,8 @@ const HeaderContent: FC<HeaderProps> = memo(
     }, []);
 
     return (
-      <header className='draggable top-0 z-40 w-full bg-linear-to-b from-white/50 to-transparent dark:from-black/50 dark:to-transparent'>
-        <div className='flex h-16 w-full items-center justify-between px-4 sm:px-6'>
+      <header className='draggable bg-linear-to-b from-white/50 to-transparent dark:from-black/50 dark:to-transparent'>
+        <div className='flex h-16 items-center justify-between px-4 sm:px-6'>
           {/* Logo & Title */}
           <div className='no-drag flex items-center gap-3'>
             {/* Status Indicator */}
@@ -172,7 +144,7 @@ const HeaderContent: FC<HeaderProps> = memo(
 
             <HeaderIconButton
               icon={isMaximized ? Copy : Square}
-              iconClassName={isMaximized ? 'scale-x-[-1] -rotate-90 h-3 w-3' : 'h-3 w-3'}
+              iconClassName={isMaximized ? 'scale-x-[-1] -rotate-90' : ''}
               onClick={() => window.electron.invoke('maximize-window')}
               aria-label={isMaximized ? 'Restore' : 'Maximize'}
             />

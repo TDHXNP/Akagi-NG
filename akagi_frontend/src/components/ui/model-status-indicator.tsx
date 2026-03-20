@@ -4,9 +4,8 @@ import { GameContext } from '@/contexts/GameContext';
 import { cn } from '@/lib/utils';
 
 // 样式常量
-const CONTAINER_BASE_CLASS =
-  'no-drag animate-in fade-in slide-in-from-top-2 absolute top-2 left-2 z-50 duration-300';
-const DOT_BASE_CLASS = 'h-2.5 w-2.5 rounded-full shadow-sm transition-colors duration-500';
+const DOT_BASE_CLASS =
+  'no-drag absolute top-2 left-2 z-50 h-2.5 w-2.5 rounded-full shadow-sm transition-colors duration-500';
 
 const STATUS_VARIANTS = {
   hidden: 'hidden',
@@ -52,9 +51,5 @@ export function ModelStatusIndicator({ isConnected, className }: ModelStatusIndi
 
   if (currentStatus === 'hidden') return null;
 
-  return (
-    <div className={cn(CONTAINER_BASE_CLASS, className)}>
-      <div className={cn(DOT_BASE_CLASS, STATUS_VARIANTS[currentStatus])} />
-    </div>
-  );
+  return <div className={cn(DOT_BASE_CLASS, STATUS_VARIANTS[currentStatus], className)} />;
 }

@@ -30,7 +30,7 @@ export const CapsuleSwitch = memo(
       >
         <div
           className={cn(
-            'bg-background ease-premium absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full shadow-sm transition-all duration-500',
+            'bg-background ease-premium absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full shadow-sm transition-transform duration-500',
             checked ? 'translate-x-full' : 'translate-x-0',
           )}
         />
@@ -41,7 +41,7 @@ export const CapsuleSwitch = memo(
           disabled={disabled}
           onClick={() => onCheckedChange(false)}
           className={cn(
-            'relative z-10 flex min-w-12 flex-1 items-center justify-center rounded-full px-3 text-sm leading-none whitespace-nowrap transition-colors focus-visible:outline-none',
+            'relative z-10 flex min-w-12 items-center justify-center rounded-full px-3 text-sm leading-none whitespace-nowrap transition-colors focus-visible:outline-none',
             !checked ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
           )}
         >
@@ -54,7 +54,7 @@ export const CapsuleSwitch = memo(
           disabled={disabled}
           onClick={() => onCheckedChange(true)}
           className={cn(
-            'relative z-10 flex min-w-12 flex-1 items-center justify-center rounded-full px-3 text-sm leading-none whitespace-nowrap transition-colors focus-visible:outline-none',
+            'relative z-10 flex min-w-12 items-center justify-center rounded-full px-3 text-sm leading-none whitespace-nowrap transition-colors focus-visible:outline-none',
             checked ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
           )}
         >

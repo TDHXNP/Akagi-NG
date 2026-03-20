@@ -2,7 +2,6 @@ import { Bot } from 'lucide-react';
 import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { cn } from '@/lib/utils';
 import type { FullRecommendationData } from '@/types';
 
 import StreamRecommendation from './StreamRecommendation';
@@ -17,15 +16,13 @@ const StreamRenderComponent: FC<StreamRenderComponentProps> = memo(({ data }) =>
 
   if (!data) {
     if (isHudPage) {
-      return <div id='render-source' className='h-full w-full bg-transparent' />;
+      return <div id='render-source' className='h-full w-full' />;
     }
 
     return (
       <div
         id='render-source'
-        className={cn(
-          'flex h-full w-full flex-col items-center justify-center gap-4 bg-transparent p-8 text-center',
-        )}
+        className='flex h-full w-full flex-col items-center justify-center gap-4 p-8 text-center'
       >
         <div className='flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-emerald-500/20 to-teal-500/20 dark:from-emerald-500/10 dark:to-teal-500/10'>
           <Bot className='h-10 w-10 text-emerald-500 dark:text-emerald-400' />
@@ -43,14 +40,12 @@ const StreamRenderComponent: FC<StreamRenderComponentProps> = memo(({ data }) =>
   return (
     <div
       id='render-source'
-      className='relative flex h-full w-full flex-col items-center justify-center bg-transparent p-4'
+      className='relative flex h-full w-full flex-col items-center justify-center gap-4 p-4'
     >
-      <div className='flex w-full flex-col gap-4'>
-        {(data.recommendations || []).slice(0, 3).map((rec, index) => {
-          const key = `${rec.action}-${rec.tile || ''}-${rec.consumed?.join(',') || ''}-${index}`;
-          return <StreamRecommendation key={key} {...rec} />;
-        })}
-      </div>
+      {(data.recommendations || []).slice(0, 3).map((rec, index) => {
+        const key = `${rec.action}-${rec.tile || ''}-${rec.consumed?.join(',') || ''}-${index}`;
+        return <StreamRecommendation key={key} {...rec} />;
+      })}
     </div>
   );
 });

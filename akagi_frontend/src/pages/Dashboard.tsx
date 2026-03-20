@@ -138,7 +138,7 @@ function Dashboard({ settingsPromise }: DashboardProps) {
 
       <div
         className={cn(
-          'ease-premium flex h-full flex-col transition-all duration-1200',
+          'ease-premium flex h-full flex-col transition duration-1200',
           isMounted ? 'blur-0 opacity-100' : 'opacity-0 blur-xl',
         )}
       >
@@ -152,10 +152,8 @@ function Dashboard({ settingsPromise }: DashboardProps) {
           onToggleHud={handleToggleHud}
           isHudActive={context.isHudActive}
         />
-        <main className='mx-auto flex w-full grow flex-col items-center justify-center overflow-hidden px-4 py-4 sm:px-6'>
-          <div className='flex h-full w-full flex-col items-center justify-center'>
-            <StreamPlayer className='h-full w-full' />
-          </div>
+        <main className='flex w-full grow overflow-hidden px-4 py-4 sm:px-6'>
+          <StreamPlayer className='h-full w-full' />
         </main>
 
         <Footer />

@@ -39,11 +39,11 @@ export const ThemeToggle: FC<ThemeToggleProps> = memo(({ theme, setTheme }) => {
   const activeOption = THEME_OPTIONS[activeIndex];
 
   return (
-    <div className='no-drag relative inline-flex h-full gap-0 rounded-full border border-zinc-500/20 bg-transparent p-0.5 dark:border-zinc-400/20'>
+    <div className='no-drag relative inline-flex h-full rounded-full border border-zinc-500/20 p-0.5 dark:border-zinc-400/20'>
       {/* 动画圆形滑块背景 - 弹性比例模式 */}
       <div
         className={cn(
-          'ease-premium absolute inset-y-0.5 left-0.5 aspect-square rounded-full transition-all duration-500',
+          'ease-premium absolute inset-y-0.5 left-0.5 aspect-square rounded-full transition duration-500',
           activeOption.activeColor,
         )}
         style={{

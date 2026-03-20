@@ -49,37 +49,33 @@ export const ModelConfigSection: FC<ModelConfigSectionProps> = memo(
             </SettingsItem>
 
             {settings.ot.online ? (
-              <div className='animate-in fade-in slide-in-from-top-2 ease-premium space-y-4 transition-all duration-500'>
-                <div className='space-y-4'>
-                  <SettingsItem label={t('settings.model_config.server_url')}>
-                    <Input
-                      className={
-                        !settings.ot.server
-                          ? 'border-destructive focus-visible:ring-destructive'
-                          : ''
-                      }
-                      value={settings.ot.server}
-                      onChange={(e) => updateSetting(['ot', 'server'], e.target.value)}
-                      placeholder='http://[IP_ADDRESS]'
-                    />
-                  </SettingsItem>
-                  <SettingsItem label={t('settings.model_config.api_key')}>
-                    <Input
-                      type='password'
-                      className={
-                        !settings.ot.api_key
-                          ? 'border-destructive focus-visible:ring-destructive'
-                          : ''
-                      }
-                      value={settings.ot.api_key}
-                      onChange={(e) => updateSetting(['ot', 'api_key'], e.target.value)}
-                      placeholder='<YOUR_API_KEY>'
-                    />
-                  </SettingsItem>
-                </div>
+              <div className='space-y-4'>
+                <SettingsItem label={t('settings.model_config.server_url')}>
+                  <Input
+                    className={
+                      !settings.ot.server ? 'border-destructive focus-visible:ring-destructive' : ''
+                    }
+                    value={settings.ot.server}
+                    onChange={(e) => updateSetting(['ot', 'server'], e.target.value)}
+                    placeholder='http://[IP_ADDRESS]'
+                  />
+                </SettingsItem>
+                <SettingsItem label={t('settings.model_config.api_key')}>
+                  <Input
+                    type='password'
+                    className={
+                      !settings.ot.api_key
+                        ? 'border-destructive focus-visible:ring-destructive'
+                        : ''
+                    }
+                    value={settings.ot.api_key}
+                    onChange={(e) => updateSetting(['ot', 'api_key'], e.target.value)}
+                    placeholder='<YOUR_API_KEY>'
+                  />
+                </SettingsItem>
               </div>
             ) : (
-              <div className='animate-in fade-in slide-in-from-bottom-2 ease-premium space-y-4 transition-all duration-500'>
+              <div className='space-y-4'>
                 <SettingsItem label={t('settings.model_config.model_4p')}>
                   <Select
                     value={settings.model_config.model_4p}
