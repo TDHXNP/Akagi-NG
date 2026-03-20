@@ -90,13 +90,18 @@ class MortalBot:
 
         is_sync = False
         match event:
+            case ReachEvent(actor=actor) if actor == self.player_id:
+                # 玩家自己立直时，接下来必须且只能切出立直宣告牌。
+                # 引擎无需再做推理（立直前瞻已涵盖此信息），直接转为同步状态以节省算力并抑制 UI 闪烁。
+                is_sync = True
+                # 检查 MJAIEvent 中的 sync 字段
             case MJAIEventBase(sync=is_sync):
                 pass
 
         try:
             # MJAI 协议底层 C++ Bot (mjai-python) 接受并返回 JSON 字符串
             event_json = serialize_mjai_event(event)
-            # 同步快进：仅更新 C++ 状态机，不触发决策推理。
+            # can_act=False 时同步快进，仅更新状态，不触发决策推理。
             res = self.bot.react(event_json, can_act=False) if is_sync else self.bot.react(event_json)
             if not res:
                 return None
