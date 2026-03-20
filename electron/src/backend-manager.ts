@@ -191,7 +191,8 @@ export class BackendManager {
     console.log('Starting backend in PROD mode...');
 
     const binaryName = process.platform === 'win32' ? 'akagi-ng.exe' : 'akagi-ng';
-    const binaryPath = getAssetPath('bin', binaryName);
+    const isPackagedMac = app.isPackaged && process.platform === 'darwin';
+    const binaryPath = getAssetPath(isPackagedMac ? 'MacOS/bin' : 'bin', binaryName);
 
     if (!fs.existsSync(binaryPath)) {
       const msg = `Executable not found at ${binaryPath}`;
